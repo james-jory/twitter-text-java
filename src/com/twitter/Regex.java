@@ -159,6 +159,10 @@ public class Regex {
   private static final String DOLLAR_SIGN_CHAR = "\\$";
   private static final String CASHTAG = "[a-z]{1,6}(?:[._][a-z]{1,2})?";
 
+  private static final String CARET_CHAR = "\\^";
+  private static final String COTAG = "[a-z]{2,3}(?:)?";
+  //private static final String COTAG = "[" + HASHTAG_ALPHA_CHARS +"]{2,3}";
+
   /* Begin public constants */
 
   public static final Pattern VALID_HASHTAG = Pattern.compile("(^|[^&" + HASHTAG_ALPHA_NUMERIC_CHARS + "])(#|\uFF03)(" + HASHTAG_ALPHA_NUMERIC + "*" + HASHTAG_ALPHA + HASHTAG_ALPHA_NUMERIC + "*)", Pattern.CASE_INSENSITIVE);
@@ -197,4 +201,9 @@ public class Regex {
   public static final int VALID_CASHTAG_GROUP_BEFORE = 1;
   public static final int VALID_CASHTAG_GROUP_DOLLAR = 2;
   public static final int VALID_CASHTAG_GROUP_CASHTAG = 3;
+
+  public static final Pattern VALID_COTAG = Pattern.compile("(^|" + UNICODE_SPACES + ")(" + CARET_CHAR + ")(" + COTAG + ")" +"(?=$|\\s|\\p{Punct})", Pattern.CASE_INSENSITIVE);
+  public static final int VALID_COTAG_GROUP_BEFORE = 1;
+  public static final int VALID_COTAG_GROUP_CARET = 2;
+  public static final int VALID_COTAG_GROUP_COTAG = 3;
 }

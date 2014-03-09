@@ -10,7 +10,7 @@ import java.util.regex.*;
 public class Extractor {
   public static class Entity {
     public enum Type {
-      URL, HASHTAG, MENTION, CASHTAG
+      URL, HASHTAG, MENTION, CASHTAG, COTAG
     }
     protected int start;
     protected int end;
@@ -147,7 +147,7 @@ public class Extractor {
   }
 
   /**
-   * Extract URLs, @mentions, lists and #hashtag from a given text/tweet.
+   * Extract URLs, @mentions, lists, #hashtags, $cashtags, and ^cotags from a given text/tweet.
    * @param text text of tweet
    * @return list of extracted entities
    */
@@ -157,6 +157,7 @@ public class Extractor {
     entities.addAll(extractHashtagsWithIndices(text, false));
     entities.addAll(extractMentionsOrListsWithIndices(text));
     entities.addAll(extractCashtagsWithIndices(text));
+    entities.addAll(extractCotagsWithIndices(text));
 
     removeOverlappingEntities(entities);
     return entities;
@@ -451,6 +452,55 @@ public class Extractor {
 
     while (matcher.find()) {
       extracted.add(new Entity(matcher, Entity.Type.CASHTAG, Regex.VALID_CASHTAG_GROUP_CASHTAG));
+    }
+
+    return extracted;
+  }
+
+  /**
+   * Extract ^cotag references from Tweet text.
+   *
+   * @param text of the tweet from which to extract cotags
+   * @return List of cotags referenced (without the leading ^ sign)
+   */
+  public List<String> extractCotags(String text) {
+    if (text == null || text.isEmpty()) {
+      return Collections.emptyList();
+    }
+
+    List<String> extracted = new ArrayList<String>();
+    for (Entity entity : extractCotagsWithIndices(text)) {
+      extracted.add(entity.value);
+    }
+
+    return extracted;
+  }
+
+  /**
+   * Extract ^cotag references from Tweet text.
+   * 
+   * @see http://cota.gs/
+   *
+   * @param text of the tweet from which to extract cotags
+   * @return List of cotags referenced (without the leading ^ sign)
+   */
+  public List<Entity> extractCotagsWithIndices(String text) {
+    if (text == null || text.isEmpty()) {
+      return Collections.emptyList();
+    }
+
+    // Performance optimization.
+    // If text doesn't contain ^, text doesn't contain
+    // cotag, so we can simply return an empty list.
+    if (text.indexOf('^') == -1) {
+      return Collections.emptyList();
+    }
+
+    List<Entity> extracted = new ArrayList<Entity>();
+    Matcher matcher = Regex.VALID_COTAG.matcher(text);
+
+    while (matcher.find()) {
+      extracted.add(new Entity(matcher, Entity.Type.COTAG, Regex.VALID_COTAG_GROUP_COTAG));
     }
 
     return extracted;

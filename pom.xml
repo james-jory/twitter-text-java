@@ -2,14 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.twitter</groupId>
+  <groupId>com.vintank</groupId>
   <artifactId>twitter-text</artifactId>
-  <version>1.6.1</version>
+  <version>1.6.2</version>
 
   <packaging>jar</packaging>
   <name>twitter-text</name>
   <description>Text processing routines for Twitter Tweets</description>
-  <url>https://github.com/twitter/twitter-text-java</url>
+  <url>https://github.com/james-jory/twitter-text-java</url>
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -19,15 +19,15 @@
     </license>
   </licenses>
   <scm>
-    <url>https://github.com/twitter/twitter-text-java</url>
-    <connection>scm:git:git://github.com/twitter/twitter-text-java.git</connection>
+    <url>https://github.com/james-jory/twitter-text-java</url>
+    <connection>scm:git:git://github.com/james-jory/twitter-text-java.git</connection>
   </scm>
   <developers>
     <developer>
-      <id>jakl</id>
-      <name>James Koval</name>
-      <email>james.ross.koval@gmail.com</email>
-      <url>https://twitter.com/jakl</url>
+      <id>james-jory</id>
+      <name>James Jory</name>
+      <email>james.b.jory@gmail.com</email>
+      <url>https://twitter.com/james_jory</url>
     </developer>
   </developers>
 
@@ -92,18 +92,25 @@
     <encoding>UTF-8</encoding>
   </properties>
 
-  <distributionManagement>
-    <snapshotRepository>
-      <id>sonatype-nexus-snapshots</id>
-      <name>Sonatype OSS</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <repository>
-      <id>sonatype-nexus-staging</id>
-      <name>Nexus Release Repository</name>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-  </distributionManagement>
+	<distributionManagement>
+		<repository>
+			<id>nexus</id>
+			<name>VinTank Releases</name>
+			<url>http://nexus.vintank.com/content/repositories/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus</id>
+			<name>VinTank Snapshot</name>
+			<url>http://nexus.vintank.com/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<!--
+		<site>
+			<id>nexus-site</id>
+			<name>VinTank Sites</name>
+			<url>dav:http://nexus.vintank.com/content/sites/site/</url>
+		</site>
+		-->
+	</distributionManagement>
 
   <repositories>
     <repository>

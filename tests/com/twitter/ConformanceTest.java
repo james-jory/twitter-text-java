@@ -110,6 +110,32 @@ public class ConformanceTest extends TestCase {
     }
   }
 
+  public void testCotagsExtractor() throws Exception {
+    File yamlFile = new File(conformanceDir, "extract.yml");
+    List testCases = loadConformanceData(yamlFile, "cotags");
+    for (Map testCase : (List<Map>)testCases) {
+      assertEquals((String)testCase.get(KEY_DESCRIPTION),
+                   (List)testCase.get(KEY_EXPECTED_OUTPUT),
+                   extractor.extractCotags((String)testCase.get(KEY_INPUT)));
+    }
+  }
+
+  public void testCotagsWithIndicesExtractor() throws Exception {
+    File yamlFile = new File(conformanceDir, "extract.yml");
+    List testCases = loadConformanceData(yamlFile, "cotags_with_indices");
+    for (Map testCase : (List<Map>)testCases) {
+      List<Map<String, Object>> expectedConfig = (List)testCase.get(KEY_EXPECTED_OUTPUT);
+      List<Extractor.Entity> expected = new ArrayList<Extractor.Entity>();
+      for (Map<String, Object> configEntry : expectedConfig) {
+        List<Integer> indices = (List<Integer>)configEntry.get("indices");
+        expected.add(new Extractor.Entity(indices.get(0), indices.get(1), configEntry.get("cotag").toString(), Entity.Type.COTAG));
+      }
+
+      assertEquals((String)testCase.get(KEY_DESCRIPTION),
+                   expected,
+                   extractor.extractCotagsWithIndices((String)testCase.get(KEY_INPUT)));
+    }
+  }
 
   public void testUsernameAutolinking() throws Exception {
     File yamlFile = new File(conformanceDir, "autolink.yml");
